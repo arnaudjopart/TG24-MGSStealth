@@ -28,7 +28,7 @@ public class WallDetector : MonoBehaviour
         {
             case State.Default:
 
-                var ray = new Ray(transform.position + _raycastStartOfset, transform.forward);
+                var ray = new Ray(transform.position + _raycastStartOffset, transform.forward);
                 if (Physics.Raycast(ray, out var hit, _maxDistance, _layerMask))
                 {
                     
@@ -65,7 +65,7 @@ public class WallDetector : MonoBehaviour
         InCover
     }
     private State _state;
-    [SerializeField] private Vector3 _raycastStartOfset;
+    [SerializeField] private Vector3 _raycastStartOffset;
     [SerializeField] private float _maxDistance;
     [SerializeField] private LayerMask _layerMask;
     private float _timer;

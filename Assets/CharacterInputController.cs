@@ -28,12 +28,12 @@ public class CharacterInputController : MonoBehaviour
         { 
             var characterForwardBasedOnCamera = 
                 Vector3.ProjectOnPlane(_cameraTransform.forward, Vector3.up).normalized;
-            //transform.rotation = Quaternion.LookRotation(characterForwardBasedOnCamera);
-            transform.rotation = Quaternion.LookRotation(new Vector3(inputX,0,inputY));
+            transform.rotation = Quaternion.LookRotation(characterForwardBasedOnCamera);
+            
         }
 
-        //var move = transform.TransformDirection(new Vector3(inputX,0, inputY));
-        var move = new Vector3(inputX, 0, inputY);
+        var move = transform.TransformDirection(new Vector3(inputX,0, inputY));
+        //var move = new Vector3(inputX, 0, inputY);
         _characterController.SimpleMove(move * _moveSpeed);
     }
 

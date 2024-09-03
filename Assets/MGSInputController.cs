@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MGSInputController : MonoBehaviour
@@ -53,7 +51,6 @@ public class MGSInputController : MonoBehaviour
                 }
 
                 move = _cameraForwardOnXZ * inputVector.y + _cameraRightOnXZ * inputVector.x;
-                if (move.sqrMagnitude > 1) move = move.normalized;
 
                 _animator.SetFloat("inputYFloat", inputVector.y);
 
@@ -80,7 +77,6 @@ public class MGSInputController : MonoBehaviour
                 }
 
                 move = _cameraForwardOnXZ * inputVector.y + _cameraRightOnXZ * inputVector.x;
-                if (move.sqrMagnitude > 1) move = move.normalized;
 
                 _currentMoveSpeed = _sneakingSpeed;
 
