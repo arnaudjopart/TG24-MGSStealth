@@ -21,9 +21,29 @@ public class MGSInputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Input listening
+        HandleMovement();
+        HandleInteraction();
+
+        
+    }
+
+    private void HandleInteraction()
+    {
+        if (_currentInteractable != null)
+        {
+            if (Input.GetKeyDown(_currentInteractable.ActionKey))
+            {
+                Debug.Log("Action");
+                _currentInteractable.Interact();
+            }
+        }
+
+    }
+
+    private void HandleMovement()
+    {
         var inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if(inputVector.sqrMagnitude>1 ) inputVector = inputVector.normalized;
+        if (inputVector.sqrMagnitude > 1) inputVector = inputVector.normalized;
 
         //Apply input to movement Axis
         var move = Vector3.zero;
@@ -43,7 +63,7 @@ public class MGSInputController : MonoBehaviour
                     Debug.Log(inputVector.sqrMagnitude);
                     _overrideInputUntilNextInputPose = false;
                 }
-                
+
                 if (!_overrideInputUntilNextInputPose)
                 {
                     _cameraForwardOnXZ = Vector3.ProjectOnPlane(_cameraTransform.forward, Vector3.up).normalized;
@@ -60,7 +80,7 @@ public class MGSInputController : MonoBehaviour
                         Vector3.ProjectOnPlane(_cameraTransform.forward, Vector3.up).normalized;
                     transform.rotation = Quaternion.LookRotation(characterForwardBasedOnCamera);
                 }
-                
+
                 _currentMoveSpeed = _walkingSpeed;
                 _animator.SetFloat("inputYFloat", inputVector.magnitude);
                 if (inputVector.sqrMagnitude > .1f) transform.rotation = Quaternion.LookRotation(move);
@@ -104,7 +124,7 @@ public class MGSInputController : MonoBehaviour
 
                 var moveDirection = Vector3.Dot(move, transform.right);
                 _animator.SetFloat("inputYFloat", moveDirection);
-                
+
                 break;
         }
 
@@ -131,6 +151,21 @@ public class MGSInputController : MonoBehaviour
         m_rightCoverCamera.SetActive(!hasCover);
     }
 
+    public void SetInteractable(IInteractable interactable)
+    {
+        _currentInteractable = interactable;
+        _currentInteractable.InitInteraction();
+    }
+
+    public void ReleaseInteractable()
+    {
+        if (_currentInteractable!=null)
+        {
+            _currentInteractable.CancelInteraction();
+        }
+        _currentInteractable = null;
+    }
+
     private Transform _cameraTransform;
     private CharacterController _characterController;
     private Animator _animator;
@@ -147,6 +182,7 @@ public class MGSInputController : MonoBehaviour
     private bool _limitMovesOnLeft;
     [SerializeField] private GameObject _mainCoverCamera;
     private bool _overrideInputUntilNextInputPose;
+    private IInteractable _currentInteractable;
 
     public event Action OnLeaveCoverEvent;
 }
