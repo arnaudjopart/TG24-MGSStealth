@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
@@ -43,6 +44,9 @@ public class TestAssasination : MonoBehaviour, IInteractable
         transform.SetParent(_timeLineContainer.transform);
         _controlPlayable.enabled = true;
         _controlPlayable.Play();
+        GetComponent<NavMeshAgent>().isStopped = true;
+        GetComponent<BehaviourTreeController>().enabled = false;
+
     }
     public void CloseInteraction()
     {

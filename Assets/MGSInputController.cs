@@ -50,17 +50,18 @@ public class MGSInputController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            var isCrouched = !_animator.GetBool("Crouch");
-            _animator.SetBool("Crouch", isCrouched);
+            _isCrouched = !_animator.GetBool("Crouch");
+            _animator.SetBool("Crouch", _isCrouched);
         }
 
         switch (_currentState)
         {
             case State.Walking:
 
+
                 if (inputVector.sqrMagnitude < .35f)
                 {
-                    Debug.Log(inputVector.sqrMagnitude);
+                    //Debug.Log(inputVector.sqrMagnitude);
                     _overrideInputUntilNextInputPose = false;
                 }
 
@@ -127,7 +128,7 @@ public class MGSInputController : MonoBehaviour
 
                 break;
         }
-
+        _currentMoveSpeed = _isCrouched ? _sneakingSpeed :_walkingSpeed;
         _characterController.SimpleMove(move * _currentMoveSpeed);
     }
 
@@ -183,6 +184,7 @@ public class MGSInputController : MonoBehaviour
     [SerializeField] private GameObject _mainCoverCamera;
     private bool _overrideInputUntilNextInputPose;
     private IInteractable _currentInteractable;
+    private bool _isCrouched;
 
     public event Action OnLeaveCoverEvent;
 }
